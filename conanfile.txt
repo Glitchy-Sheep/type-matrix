@@ -1,0 +1,10 @@
+[requires]
+argh/1.3.2      # Command line parser library
+pdcurses/3.9    # Terminal control library (Does all the magic)
+
+
+[imports]
+bin, *.dll -> ./third_party
+
+[generators]
+cmake
