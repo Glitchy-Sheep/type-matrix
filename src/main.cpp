@@ -3,6 +3,8 @@
 #include "conf.h"
 #include "matrix.h"
 
+#include <vector>
+
 
 namespace cfg = config;
 
@@ -10,33 +12,31 @@ namespace cfg = config;
 int main(int argc, char** argv)
 {
     WINDOW *wnd = initscr();
+    curs_set(0);
 
     cfg::TM_CONFIG conf = cfg::get_config(argc, argv);
     if (conf.colored_terminal)
         start_color();
 
+    // Temp test of all the matrix
+    std::vector<MatrixLine> lines;
 
-    // Temp test
-    std::vector<MatrixSymbol> symbols;
     int max_x, max_y;
     getmaxyx(wnd, max_y, max_x);
-
-    for (int i = 0; i < max_x; i++)
+    for (int n_lines = 0; n_lines < max_x; ++n_lines)
     {
-        symbols.push_back(
-            MatrixSymbol{'A', i, 0, COLOR_RED, DIRECTION_DOWN}
+        lines.push_back(
+            MatrixLine{'A', n_lines, 0, COLOR_MAGENTA, DIRECTION_DOWN}
         );
-        if (i % 2 == 0)
-            symbols[i].set_additional_attribute(A_BOLD | A_UNDERLINE);
+        lines[n_lines].set_tail_max_length(max_y);
     }
 
-    for (int x = 0; x < max_y; ++x)
+    for (int n_rows = 0; n_rows < max_y; ++n_rows)
     {
-        for (int i = 0; i < max_x; ++i)
-            symbols[i].move();
+        for (int n_lines = 0; n_lines < max_x; ++n_lines)
+            lines[n_lines].move();
         refresh();
-        _sleep(1000 / 10);
+        _sleep(1000/15);
     }
-
     return endwin();
 }
