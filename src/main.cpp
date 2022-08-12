@@ -8,6 +8,7 @@
 
 namespace cfg = config;
 
+void init_all_color_pairs();
 
 int main(int argc, char** argv)
 {
@@ -16,9 +17,13 @@ int main(int argc, char** argv)
 
     cfg::TM_CONFIG conf = cfg::get_config(argc, argv);
     if (conf.colored_terminal)
+    {
         start_color();
+        init_all_color_pairs();
+    }
 
-    // Temp test of all the matrix
+    // Temp test of all the matrix (with fixed color changing)
+    srand(static_cast<unsigned int>(time(nullptr)));
     std::vector<MatrixLine> lines;
 
     int max_x, max_y;
@@ -26,7 +31,7 @@ int main(int argc, char** argv)
     for (int n_lines = 0; n_lines < max_x; ++n_lines)
     {
         lines.push_back(
-            MatrixLine{'A', n_lines, 0, COLOR_MAGENTA, DIRECTION_DOWN}
+            MatrixLine{'A', n_lines, 0, rand()%8, DIRECTION_DOWN}
         );
         lines[n_lines].set_tail_max_length(max_y);
     }
@@ -39,4 +44,18 @@ int main(int argc, char** argv)
         _sleep(1000/15);
     }
     return endwin();
+}
+
+
+
+void init_all_color_pairs()
+{
+    init_pair(COLOR_BLACK,   COLOR_BLACK,   COLOR_BLACK);
+    init_pair(COLOR_BLUE,    COLOR_BLUE,    COLOR_BLACK);
+    init_pair(COLOR_CYAN,    COLOR_CYAN,    COLOR_BLACK);
+    init_pair(COLOR_GREEN,   COLOR_GREEN,   COLOR_BLACK);
+    init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
+    init_pair(COLOR_RED,     COLOR_RED,     COLOR_BLACK);
+    init_pair(COLOR_WHITE,   COLOR_WHITE,   COLOR_BLACK);
+    init_pair(COLOR_YELLOW,  COLOR_YELLOW,  COLOR_BLACK);
 }

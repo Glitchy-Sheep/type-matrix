@@ -22,16 +22,9 @@ void MatrixSymbol::hide() const
 
 void MatrixSymbol::show() const
 {
-    // [BUG] TODO: Attron doesn't work as expected:
-    // Colors change every time you change pairs
-    // so we need to change pairs, not colors in a pair.
-    // Solution: INIT color pairs when program starts
-    // each pair number according to its color number and vise versa
-
-    init_pair(1, m_color, COLOR_BLACK);
-    attron(COLOR_PAIR(1));
+    attron(COLOR_PAIR(m_color));
     mvaddch(m_y, m_x, m_symbol | m_additional_attribute);
-    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(m_color));
 }
 
 void MatrixSymbol::move()
