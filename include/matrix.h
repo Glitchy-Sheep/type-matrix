@@ -2,6 +2,8 @@
 #include <curses.h>
 #include <list>
 
+#include "conf.h"
+
 enum
 {
     DIRECTION_UP,
@@ -51,7 +53,26 @@ public:
     void hide() const;
 
     void move();
+    bool is_beyond_limits(int lim_x, int lim_y) const;
 
     void set_tail_max_length(unsigned int new_max_length);
     void set_direction(int new_direction);
+};
+
+
+class Matrix {
+    std::list<MatrixLine *> m_lines;
+    config::TM_CONFIG m_main_cfg;
+    int m_term_max_x, m_term_max_y;
+    int m_lines_max_length = 8;
+    int m_lines_color;
+public:
+    Matrix(config::TM_CONFIG cfg, int color, int max_x, int max_y);
+
+    void spawn_line();
+    void move_lines();
+
+    // TODO: void handle_terminal_resize();
+
+    ~Matrix();
 };

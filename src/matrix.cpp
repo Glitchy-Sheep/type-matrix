@@ -135,7 +135,7 @@ void MatrixLine::move()
     m_tail.push_front(MatrixSymbol{m_head});
     m_tail.front().set_additional_attribute(A_NORMAL);
 
-    if (m_tail.size() > m_tail_max_length)
+    if (m_tail.size() > m_tail_max_length && m_tail.size() != 0)
     {
         m_tail.back().hide();
         m_tail.pop_back();
@@ -146,6 +146,18 @@ void MatrixLine::move()
 
     for (auto &symbol : m_tail)
         symbol.show();
+}
+
+bool MatrixLine::is_beyond_limits(int lim_x, int lim_y) const
+{
+    // A whole line is beyond terminal limits
+    // only when the last symbol of the line is hidden
+    // it's either last tail element or (if tail is empty) head
+    if (m_tail.size() == 0)
+        return m_head.is_beyond_limits(lim_x, lim_y);
+    else
+        return m_tail.back().is_beyond_limits(lim_x, lim_y);
+
 }
 
 void MatrixLine::set_tail_max_length(unsigned int new_max_length)
@@ -160,4 +172,58 @@ void MatrixLine::set_direction(int new_direction)
     m_direction = new_direction;
     for (auto &symbol : m_tail)
         symbol.set_direction(new_direction);
+}
+
+
+//-------------------------------------------//
+//       One matrix class realization        //
+//-------------------------------------------//
+
+Matrix::Matrix(config::TM_CONFIG cfg, int color, int max_x, int max_y)
+    : m_main_cfg{cfg}, m_term_max_x{max_x}, m_term_max_y{max_y},
+        m_lines_color{color}
+{
+}
+
+Matrix::~Matrix()
+{
+    for (MatrixLine *line : m_lines)
+        delete(line);
+}
+
+void Matrix::move_lines()
+{
+    std::list<MatrixLine *> for_removal;
+
+    for (MatrixLine *line : m_lines)
+    {
+        if (!line) // should not ever happen
+            continue;
+
+        line->move();
+        if (line->is_beyond_limits(m_term_max_x, m_term_max_y))
+            for_removal.push_back(line);
+    }
+
+    // Remove trash only when all the lines are processed
+    // so you don't have access memory violation
+    for (MatrixLine *line : for_removal)
+    {
+        m_lines.remove(line);
+        delete line;
+    }
+}
+
+void Matrix::spawn_line()
+{
+
+    int rand_x = rand() % m_term_max_x;
+    int rand_y = 0;
+
+    MatrixLine *new_line =
+            new MatrixLine{'a', rand_x, rand_y, m_lines_color, DIRECTION_DOWN};
+
+    new_line->set_tail_max_length(m_lines_max_length);
+
+    m_lines.push_back(new_line);
 }
