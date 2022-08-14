@@ -72,7 +72,7 @@ public:
     void spawn_line();
     void move_lines();
 
-    // TODO: void handle_terminal_resize();
+    void handle_terminal_resize(WINDOW *wnd);
 
     ~Matrix();
 };

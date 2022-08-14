@@ -227,3 +227,17 @@ void Matrix::spawn_line()
 
     m_lines.push_back(new_line);
 }
+
+void Matrix::handle_terminal_resize(WINDOW *wnd)
+{
+    resize_term(0, 0);
+    curs_set(0); // resize_term reset cursor settings
+
+    int new_max_x, new_max_y;
+    getmaxyx(wnd, new_max_y, new_max_x);
+
+    m_term_max_x = new_max_x;
+    m_term_max_y = new_max_y;
+
+    clear();
+}
