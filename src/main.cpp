@@ -1,15 +1,14 @@
 #include <iostream>
 #include <curses.h>
+#include <vector>
+#include <thread>       // std::this_thread::sleep_for()
+#include <chrono>       // std::chrono::milliseconds()
+
 #include "conf.h"
 #include "matrix.h"
-
-#include <vector>
-
+#include "ncurses_control.h"
 
 namespace cfg = config;
-
-void init_all_color_pairs();
-void init_ncurses_settings(WINDOW *wnd);
 
 int main(int argc, char** argv)
 {
@@ -26,38 +25,25 @@ int main(int argc, char** argv)
 
     int max_x, max_y;
     getmaxyx(wnd, max_y, max_x);
-    Matrix matrix{conf, COLOR_GREEN, max_x, max_y};
+    Matrix matrix{conf, conf.main_color, max_x, max_y};
 
+    int event = 0;
     while(true)
     {
-        if (wgetch(wnd) == (KEY_RESIZE))
+        event = wgetch(wnd);
+        if (event == KEY_RESIZE)
             matrix.handle_terminal_resize(wnd);
+        if (event == KEY_CTRL_('c'))
+        {
+            ncurses_cleanup();
+            exit(0);
+        }
 
         matrix.spawn_line();
         matrix.move_lines();
         refresh();
-        _sleep(1000/15);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000/conf.fps));
     }
 
     return endwin();
-}
-
-void init_ncurses_settings(WINDOW *wnd)
-{
-    timeout(0);     // getch will check events without blocking
-    noecho();
-    curs_set(0);    // Remove nasty cursor
-    keypad(wnd, 1); // Ensures that getch() will return KEY_RESIZE
-}
-
-void init_all_color_pairs()
-{
-    init_pair(COLOR_BLACK,   COLOR_BLACK,   COLOR_BLACK);
-    init_pair(COLOR_BLUE,    COLOR_BLUE,    COLOR_BLACK);
-    init_pair(COLOR_CYAN,    COLOR_CYAN,    COLOR_BLACK);
-    init_pair(COLOR_GREEN,   COLOR_GREEN,   COLOR_BLACK);
-    init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
-    init_pair(COLOR_RED,     COLOR_RED,     COLOR_BLACK);
-    init_pair(COLOR_WHITE,   COLOR_WHITE,   COLOR_BLACK);
-    init_pair(COLOR_YELLOW,  COLOR_YELLOW,  COLOR_BLACK);
 }

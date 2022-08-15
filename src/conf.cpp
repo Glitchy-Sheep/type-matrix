@@ -1,11 +1,19 @@
 #include "conf.h"
 
 using namespace config;
+#define DEFAULT_FPS 15
+#define DEFAULT_MATRIX_COLOR COLOR_GREEN
 
-void config::print_help_msg()
+void config::print_help_msg(argh::parser &cmdl)
 {
-    return;
-    // TODO - add help msg and print it with ncurses funcs
+    printf("\nUsage: "); printf(cmdl[0].c_str()); printf(" [options]\n");
+
+    printf("Available options:\n");
+    printf("\n-h --help\t\tshow this help message\n");
+    printf("\n-c --color\t\tset matrix main color (default=green)\n");
+    printf("  Available colors:\n");
+    printf("  black, blue, cyan, green, magenta, red, white, yellow\n");
+    printf("\n-f --fps\t\tset matrix frames per second limit (default=15)\n");
 }
 
 
@@ -58,36 +66,42 @@ static void set_user_color(TM_CONFIG &conf, argh::parser &cmdl)
 
             if (user_color == UNKNOWN_COLOR)
             {
-                print_help_msg();
+                ncurses_cleanup();
+                print_help_msg(cmdl);
                 exit(int(ERRORS::ERR_COLOR_NAME));
             }
             else
                 conf.main_color = user_color;
         }
+        else
+            conf.main_color = DEFAULT_MATRIX_COLOR;
     }
 }
 
 
 
-static void set_user_speed(TM_CONFIG &conf, argh::parser &cmdl)
+static void set_user_fps(TM_CONFIG &conf, argh::parser &cmdl)
 {
-    if (cmdl({"-s", "--speed"}))
+    if (cmdl({"-f", "--fps"}))
     {
-        int speed;
-        std::string user_speed_value = cmdl({"-s", "--speed"}).str();
+        int fps;
+        std::string user_speed_value = cmdl({"-f", "--fps"}).str();
 
         try
         {
-            speed = std::stoi(user_speed_value);
-            conf.speed = speed;
+            fps = std::stoi(user_speed_value);
+            if (fps <= 0) fps = DEFAULT_FPS;
+            conf.fps = fps;
         }
         catch (...)
         {
-            print_help_msg();
+            ncurses_cleanup();
+            print_help_msg(cmdl);
             exit(int(ERRORS::ERR_INVALID_CMD_VALUE));
         }
     }
-
+    else
+        conf.fps = DEFAULT_FPS;
 }
 
 
@@ -98,13 +112,20 @@ TM_CONFIG config::get_config(int argc, char** argv)
     TM_CONFIG conf{};
 
     // setup
-    cmdl.add_params({"-s", "--speed"});
+    cmdl.add_params({"-f", "--fps"});
     cmdl.add_params({"-c", "--color"});
 
     cmdl.parse(argc, argv);
 
+    if (cmdl[{"-h", "--help"}])
+    {
+        ncurses_cleanup();
+        print_help_msg(cmdl);
+        exit(0);
+    }
+
     set_user_color(conf, cmdl);
-    set_user_speed(conf, cmdl);
+    set_user_fps(conf, cmdl);
 
     conf.rainbow_mode = cmdl[{"-r", "--rainbow"}];
 

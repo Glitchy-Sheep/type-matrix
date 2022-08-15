@@ -15,12 +15,14 @@ set(SOURCES
     ${SRC_DIR}/main.cpp
     ${SRC_DIR}/conf.cpp
     ${SRC_DIR}/matrix.cpp
+    ${SRC_DIR}/ncurses_control.cpp
 )
 
 set(HEADERS
     ${INCLUDE_DIR}/conf.h
     ${INCLUDE_DIR}/exit_errors.h
     ${INCLUDE_DIR}/matrix.h
+    ${INCLUDE_DIR}/ncurses_control.h
 )
 
 add_executable(main ${SOURCES} ${HEADERS})

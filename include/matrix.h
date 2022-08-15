@@ -64,9 +64,10 @@ class Matrix {
     std::list<MatrixLine *> m_lines;
     config::TM_CONFIG m_main_cfg;
     int m_term_max_x, m_term_max_y;
-    int m_lines_max_length = 8;
+    int m_lines_max_length = 8;     // TODO generate 0-8 length each time
     int m_lines_color;
 public:
+    // TODO max_x, max_y arguments optimization
     Matrix(config::TM_CONFIG cfg, int color, int max_x, int max_y);
 
     void spawn_line();
