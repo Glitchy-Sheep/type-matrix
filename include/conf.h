@@ -10,8 +10,10 @@ namespace config
         bool colored_terminal;
         bool rainbow_mode;
 
-        int main_color;         // ncurses colors bit masks
-        unsigned int fps;       // matrix frame rate
+        int main_color;                         // ncurses colors bit masks
+        unsigned int fps;                       // matrix frame rate
+        unsigned int max_line_length;           // line length limit
+        unsigned int min_line_length_deviation; // deviation from max length
     };
 
     TM_CONFIG get_config(int argc, char** argv);

@@ -180,9 +180,13 @@ void MatrixLine::set_direction(int new_direction)
 //-------------------------------------------//
 
 Matrix::Matrix(WINDOW *wnd, config::TM_CONFIG cfg)
-    : m_main_cfg{cfg}, m_lines_color{cfg.main_color}
+    : m_cfg{cfg}
 {
     getmaxyx(wnd, m_term_max_y, m_term_max_x);
+
+    m_min_line_length = m_cfg.max_line_length - m_cfg.min_line_length_deviation;
+    if (m_min_line_length < 0)
+        m_min_line_length = 0;
 }
 
 Matrix::~Matrix()
@@ -221,9 +225,10 @@ void Matrix::spawn_line()
     int rand_y = 0;
 
     MatrixLine *new_line =
-            new MatrixLine{'a', rand_x, rand_y, m_lines_color, DIRECTION_DOWN};
+        new MatrixLine{'a', rand_x, rand_y, m_cfg.main_color, DIRECTION_DOWN};
 
-    new_line->set_tail_max_length(m_lines_max_length);
+    int new_line_length = get_rand(m_min_line_length, m_cfg.max_line_length);
+    new_line->set_tail_max_length(new_line_length);
 
     m_lines.push_back(new_line);
 }

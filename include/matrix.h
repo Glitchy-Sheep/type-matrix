@@ -3,6 +3,7 @@
 #include <list>
 
 #include "conf.h"
+#include "helpers.h"
 
 enum
 {
@@ -62,10 +63,9 @@ public:
 
 class Matrix {
     std::list<MatrixLine *> m_lines;
-    config::TM_CONFIG m_main_cfg;
+    config::TM_CONFIG m_cfg;
     int m_term_max_x, m_term_max_y;
-    int m_lines_max_length = 8;     // TODO generate 0-8 length each time
-    int m_lines_color;
+    int m_min_line_length; // will be calculated with a user length deviation
 public:
     Matrix(WINDOW *wnd, config::TM_CONFIG cfg);
 
