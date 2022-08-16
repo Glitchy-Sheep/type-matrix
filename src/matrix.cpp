@@ -179,10 +179,10 @@ void MatrixLine::set_direction(int new_direction)
 //       One matrix class realization        //
 //-------------------------------------------//
 
-Matrix::Matrix(config::TM_CONFIG cfg, int color, int max_x, int max_y)
-    : m_main_cfg{cfg}, m_term_max_x{max_x}, m_term_max_y{max_y},
-        m_lines_color{color}
+Matrix::Matrix(WINDOW *wnd, config::TM_CONFIG cfg)
+    : m_main_cfg{cfg}, m_lines_color{cfg.main_color}
 {
+    getmaxyx(wnd, m_term_max_y, m_term_max_x);
 }
 
 Matrix::~Matrix()

@@ -67,8 +67,7 @@ class Matrix {
     int m_lines_max_length = 8;     // TODO generate 0-8 length each time
     int m_lines_color;
 public:
-    // TODO max_x, max_y arguments optimization
-    Matrix(config::TM_CONFIG cfg, int color, int max_x, int max_y);
+    Matrix(WINDOW *wnd, config::TM_CONFIG cfg);
 
     void spawn_line();
     void move_lines();

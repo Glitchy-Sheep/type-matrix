@@ -23,9 +23,7 @@ int main(int argc, char** argv)
         init_all_color_pairs();
     }
 
-    int max_x, max_y;
-    getmaxyx(wnd, max_y, max_x);
-    Matrix matrix{conf, conf.main_color, max_x, max_y};
+    Matrix matrix{wnd, conf};
 
     int event = 0;
     while(true)
