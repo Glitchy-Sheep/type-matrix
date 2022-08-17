@@ -37,7 +37,10 @@ int main(int argc, char** argv)
             exit(0);
         }
 
-        matrix.spawn_line();
+        int spawn_x = rand() % matrix.get_terminal_max_x();
+        int spawn_y = 0;
+
+        matrix.spawn_line(spawn_x, spawn_y);
         matrix.move_lines();
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000/conf.fps));

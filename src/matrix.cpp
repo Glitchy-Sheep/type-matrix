@@ -218,14 +218,15 @@ void Matrix::move_lines()
     }
 }
 
-void Matrix::spawn_line()
+void Matrix::spawn_line(int x, int y)
 {
-
-    int rand_x = rand() % m_term_max_x;
-    int rand_y = 0;
+    if (x > m_term_max_x || x < 0)
+        return;
+    if (y > m_term_max_y || y < 0)
+        return;
 
     MatrixLine *new_line =
-        new MatrixLine{'a', rand_x, rand_y, m_cfg.main_color, DIRECTION_DOWN};
+        new MatrixLine{'a', x, y, m_cfg.main_color, DIRECTION_DOWN};
 
     int new_line_length = get_rand(m_min_line_length, m_cfg.max_line_length);
     new_line->set_tail_max_length(new_line_length);
