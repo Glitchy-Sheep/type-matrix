@@ -47,8 +47,9 @@ class MatrixLine {
     std::list<MatrixSymbol> m_tail;
     unsigned int m_tail_max_length;
     int m_direction;
+    std::string &m_alphabet;
 public:
-    MatrixLine(char init_head, int x, int y, int color,
+    MatrixLine(std::string &alph, int x, int y, int color,
                             int direction = DIRECTION_DOWN);
     void show() const;
     void hide() const;

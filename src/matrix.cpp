@@ -107,8 +107,8 @@ void MatrixSymbol::set_color(int new_color)
 //     One matrix line class realization      //
 //--------------------------------------------//
 
-MatrixLine::MatrixLine(char init_head, int x, int y, int color, int direction)
-    : m_head{init_head, x, y, color, direction}, m_tail{}
+MatrixLine::MatrixLine(std::string &alph, int x, int y, int color, int direction)
+    : m_alphabet{alph}, m_head{alph[0], x, y, color, direction}, m_tail{}
 {
     m_tail_max_length = 0;
     m_direction = direction;
@@ -141,7 +141,8 @@ void MatrixLine::move()
         m_tail.pop_back();
     }
 
-    m_head.set_symbol(char('A' + rand() % 26));
+    char new_symbol = m_alphabet[get_rand(0, m_alphabet.size()-1)];
+    m_head.set_symbol(new_symbol);
     m_head.move();
 
     for (auto &symbol : m_tail)
@@ -226,7 +227,7 @@ void Matrix::spawn_line(int x, int y)
         return;
 
     MatrixLine *new_line =
-        new MatrixLine{'a', x, y, m_cfg.main_color, DIRECTION_DOWN};
+        new MatrixLine{m_cfg.alphabet, x, y, m_cfg.main_color, DIRECTION_DOWN};
 
     int new_line_length = get_rand(m_min_line_length, m_cfg.max_line_length);
     new_line->set_tail_max_length(new_line_length);

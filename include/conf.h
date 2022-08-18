@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include <argh.h>
 #include <curses.h>         // for COLOR_X constants
 #include "exit_errors.h"
@@ -11,9 +12,10 @@ namespace config
         bool rainbow_mode;
 
         int main_color;                         // ncurses colors bit masks
-        unsigned int fps;                       // matrix frame rate
-        unsigned int max_line_length;           // line length limit
-        unsigned int min_line_length_deviation; // deviation from max length
+        unsigned int fps;                       // matrix update frame rate
+        unsigned int max_line_length;
+        unsigned int min_line_length_deviation;
+        std::string alphabet;                   // for random symbol generation
     };
 
     TM_CONFIG get_config(int argc, char** argv);

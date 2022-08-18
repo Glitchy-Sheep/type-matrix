@@ -5,6 +5,7 @@ using namespace config;
 #define DEFAULT_MATRIX_COLOR COLOR_GREEN
 #define DEFAULT_MATRIX_LINE_LENGTH 8
 #define DEFAULT_MIN_LINE_DEVIATION 3
+#define DEFAULT_MATRIX_ALPHABET "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"
 
 void config::print_help_msg(argh::parser &cmdl)
 {
@@ -22,6 +23,8 @@ void config::print_help_msg(argh::parser &cmdl)
     printf("  this option calculates minimum length as a difference between\n");
     printf("  \"length\" value and \"deviation\" value, so for example:\n");
     printf("  [length=8 deviation=3 -> min_length = 8-3 = 5]\n");
+    printf("\n-a --alphabet\t\tset matrix alphabet as a single string\n");
+    printf("               \t\texample: -alph abc123");
 }
 
 
@@ -173,6 +176,30 @@ static void set_user_min_line_deviation(TM_CONFIG &conf, argh::parser &cmdl)
 
 
 
+void set_user_alphabet(TM_CONFIG &conf, argh::parser &cmdl)
+{
+    if (cmdl({"-a", "--alphabet"}))
+    {
+        conf.alphabet = cmdl({"-a", "--alphabet"}).str();
+        auto &alph = conf.alphabet;
+
+        if (alph.empty())
+        {
+            alph = DEFAULT_MATRIX_ALPHABET;
+            return;
+        }
+
+        // remove all duplicates
+        std::sort(alph.begin(), alph.end());
+        auto unique_it = std::unique(alph.begin(), alph.end());
+        alph.erase(unique_it, alph.end());
+    }
+    else
+        conf.alphabet = DEFAULT_MATRIX_ALPHABET;
+}
+
+
+
 TM_CONFIG config::get_config(int argc, char** argv)
 {
     argh::parser cmdl{argc, argv};
@@ -183,6 +210,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     cmdl.add_params({"-c", "--color"});
     cmdl.add_params({"-l", "--length"});
     cmdl.add_params({"-d", "--deviation"});
+    cmdl.add_params({"-a", "--alphabet"});
 
     cmdl.parse(argc, argv);
 
@@ -197,6 +225,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     set_user_color(conf, cmdl);
     set_user_max_line_length(conf, cmdl);
     set_user_min_line_deviation(conf, cmdl);
+    set_user_alphabet(conf, cmdl);
 
     conf.rainbow_mode = cmdl[{"-r", "--rainbow"}];
 
