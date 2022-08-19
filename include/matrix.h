@@ -43,13 +43,14 @@ public:
 
 
 class MatrixLine {
+    config::TM_CONFIG &m_cfg;
+
     MatrixSymbol m_head;
     std::list<MatrixSymbol> m_tail;
     unsigned int m_tail_max_length;
     int m_direction;
-    std::string &m_alphabet;
 public:
-    MatrixLine(std::string &alph, int x, int y, int color,
+    MatrixLine(config::TM_CONFIG &cfg, int x, int y,
                             int direction = DIRECTION_DOWN);
     void show() const;
     void hide() const;

@@ -16,6 +16,7 @@ void config::print_help_msg(argh::parser &cmdl)
     printf("\n-c --color\t\tset matrix main color (default=green)\n");
     printf("  Available colors:\n");
     printf("  black, blue, cyan, green, magenta, red, white, yellow\n");
+    printf("\n-r --rainbow\t\tturn on matrix disco mode. (ignores --color)\n");
     printf("\n-f --fps\t\tset matrix frames per second limit (default=15)\n");
     printf("\n-l --length\t\tset maximum length of a line tail (default=8)\n");
     printf("\n-d --deviation\t\tset minimum length of a line via deviation");
