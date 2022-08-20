@@ -134,22 +134,38 @@ void MatrixLine::hide() const
 
 void MatrixLine::move()
 {
-    m_tail.push_front(MatrixSymbol{m_head});
-    m_tail.front().set_additional_attribute(A_NORMAL);
+    // before make m_head part of the tail
+    // change its color according to the config
+    if (m_cfg.rainbow_mode)
+        m_head.set_color(get_random_ncurses_color());
+    else
+        m_head.set_color(m_cfg.main_color);
 
+    // then reset its attributes
+    // and push m_head to the tail
+    m_head.set_additional_attribute(A_NORMAL);
+    m_tail.push_front(MatrixSymbol{m_head});
+
+    // and move the head one time
+    // because it still has old coordinates
+    m_head.move();
+
+    // now head is a new element, so it needs new symbol
+    // and all the head elements has specific color - white (it looks sparky)
+    char new_symbol = m_cfg.alphabet[get_rand(0, m_cfg.alphabet.size()-1)];
+    m_head.set_symbol(new_symbol);
+    m_head.set_color(COLOR_WHITE);
+    m_head.set_additional_attribute(A_BOLD);
+
+    // if tail is too big, just cut it from its rear
     if (m_tail.size() > m_tail_max_length && m_tail.size() != 0)
     {
         m_tail.back().hide();
         m_tail.pop_back();
     }
 
-    char new_symbol = m_cfg.alphabet[get_rand(0, m_cfg.alphabet.size()-1)];
-    m_head.set_symbol(new_symbol);
-    if (m_cfg.rainbow_mode)
-        m_head.set_color(get_random_ncurses_color());
-
-    m_head.move();
-
+    // and finally update the whole line
+    m_head.show();
     for (auto &symbol : m_tail)
         symbol.show();
 }
