@@ -17,6 +17,7 @@ void config::print_help_msg(argh::parser &cmdl)
     printf("  Available colors:\n");
     printf("  black, blue, cyan, green, magenta, red, white, yellow\n");
     printf("\n-r --rainbow\t\tturn on matrix disco mode. (ignores --color)\n");
+    printf("\n-b --bold\t\tenable random bold symbol generation (default=disabled)\n");
     printf("\n-f --fps\t\tset matrix frames per second limit (default=15)\n");
     printf("\n-l --length\t\tset maximum length of a line tail (default=8)\n");
     printf("\n-d --deviation\t\tset minimum length of a line via deviation");
@@ -229,6 +230,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     set_user_alphabet(conf, cmdl);
 
     conf.rainbow_mode = cmdl[{"-r", "--rainbow"}];
+    conf.bold_generation = cmdl[{"-b", "--bold"}];
 
     return conf;
 }

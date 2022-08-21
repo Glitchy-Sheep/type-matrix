@@ -10,6 +10,7 @@ namespace config
     struct TM_CONFIG {          // whole application config
         bool colored_terminal;
         bool rainbow_mode;
+        bool bold_generation;
 
         int main_color;                         // ncurses colors bit masks
         unsigned int fps;                       // matrix update frame rate

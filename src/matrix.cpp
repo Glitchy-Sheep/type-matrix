@@ -144,6 +144,13 @@ void MatrixLine::move()
     // then reset its attributes
     // and push m_head to the tail
     m_head.set_additional_attribute(A_NORMAL);
+
+    if (m_cfg.bold_generation)
+    {
+        if (get_rand(1, 2) == 1) // 50% chance of a bold symbol
+            m_head.set_additional_attribute(A_BOLD);
+    }
+
     m_tail.push_front(MatrixSymbol{m_head});
 
     // and move the head one time
