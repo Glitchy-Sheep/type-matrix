@@ -17,6 +17,7 @@ set(SOURCES
     ${SRC_DIR}/helpers.cpp
     ${SRC_DIR}/matrix.cpp
     ${SRC_DIR}/ncurses_control.cpp
+    ${SRC_DIR}/keyboard_handler.cpp
 )
 
 set(HEADERS
@@ -25,6 +26,7 @@ set(HEADERS
     ${INCLUDE_DIR}/helpers.h
     ${INCLUDE_DIR}/matrix.h
     ${INCLUDE_DIR}/ncurses_control.h
+    ${INCLUDE_DIR}/keyboard_handler.h
 )
 
 add_executable(main ${SOURCES} ${HEADERS})

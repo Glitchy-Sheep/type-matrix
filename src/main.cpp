@@ -10,6 +10,8 @@
 
 namespace cfg = config;
 
+#include "keyboard_handler.h"
+
 int main(int argc, char** argv)
 {
     srand(static_cast<unsigned int>(time(nullptr)));
@@ -31,16 +33,30 @@ int main(int argc, char** argv)
         event = wgetch(wnd);
         if (event == KEY_RESIZE)
             matrix.handle_terminal_resize(wnd);
-        if (event == KEY_CTRL_('c'))
+        if (event == KEY_CTRL_('c') || event == KEY_ESCAPE)
         {
             ncurses_cleanup();
             exit(0);
         }
 
-        int spawn_x = rand() % matrix.get_terminal_max_x();
-        int spawn_y = 0;
+        if (conf.interactive_mode)
+        {
+            if (event != ERR)
+            {
+                int min_x, max_x;
+                get_symbol_spawn_range(wnd, event, min_x, max_x);
+                int spawn_x = get_rand(min_x, max_x);
+                int spawn_y = 0;
+                matrix.spawn_line(spawn_x, spawn_y);
+            }
+        }
+        else
+        {
+            int spawn_x = rand() % matrix.get_terminal_max_x();
+            int spawn_y = 0;
+            matrix.spawn_line(spawn_x, spawn_y);
+        }
 
-        matrix.spawn_line(spawn_x, spawn_y);
         matrix.move_lines();
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000/conf.fps));

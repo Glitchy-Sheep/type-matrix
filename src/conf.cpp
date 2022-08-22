@@ -13,6 +13,8 @@ void config::print_help_msg(argh::parser &cmdl)
 
     printf("Available options:\n");
     printf("-h --help\t\tshow this help message\n");
+    printf("\n-i --interactive\t\tmatrix falls only when you're typing. \n");
+    printf("  so you can impress your friends with your hacker skills B)\n");
     printf("\n-c --color\t\tset matrix main color (default=green)\n");
     printf("  Available colors:\n");
     printf("  black, blue, cyan, green, magenta, red, white, yellow\n");
@@ -229,6 +231,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     set_user_min_line_deviation(conf, cmdl);
     set_user_alphabet(conf, cmdl);
 
+    conf.interactive_mode = cmdl[{"-i", "--interactive"}];
     conf.rainbow_mode = cmdl[{"-r", "--rainbow"}];
     conf.bold_generation = cmdl[{"-b", "--bold"}];
 
