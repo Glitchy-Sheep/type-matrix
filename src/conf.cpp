@@ -10,6 +10,12 @@ using namespace config;
 void config::print_help_msg(argh::parser &cmdl)
 {
     printf("\nUsage: "); printf(cmdl[0].c_str()); printf(" [options]\n");
+    printf("\n");
+    printf("This program creates a matrix effect right in your terminal,\n");
+    printf("all you need is just run it and pass some options you want.\n");
+    printf("But if you don't pass any options they will be the default.\n");
+    printf("To exit the program simply press Ctrl+C or ESC.\n");
+    printf("\n");
 
     printf("Available options:\n");
     printf("-h --help\t\tshow this help message\n");
