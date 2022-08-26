@@ -10,6 +10,7 @@ namespace config
     struct TM_CONFIG {          // whole application config
         bool colored_terminal;
         bool interactive_mode;  // matrix falls only when u're typing letters a-Z
+        bool screensaver_mode;
         bool rainbow_mode;
         bool bold_generation;
 

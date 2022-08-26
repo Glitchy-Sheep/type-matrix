@@ -3,7 +3,7 @@
 using namespace config;
 #define DEFAULT_FPS 15
 #define DEFAULT_MATRIX_COLOR COLOR_GREEN
-#define DEFAULT_MATRIX_LINE_LENGTH 8
+#define DEFAULT_MATRIX_LINE_LENGTH 12
 #define DEFAULT_MIN_LINE_DEVIATION 3
 #define DEFAULT_MATRIX_ALPHABET "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"
 
@@ -34,7 +34,8 @@ void config::print_help_msg(argh::parser &cmdl)
     printf("  \"length\" value and \"deviation\" value, so for example:\n");
     printf("  [length=8 deviation=3 -> min_length = 8-3 = 5]\n");
     printf("\n-a --alphabet\t\tset matrix alphabet as a single string\n");
-    printf("               \t\texample: -alph abc123");
+    printf("               \t\texample: -alph abc123\n");
+    printf("\n-s --screensaver\texit the program if any key is pressed\n");
 }
 
 
@@ -240,6 +241,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     conf.interactive_mode = cmdl[{"-i", "--interactive"}];
     conf.rainbow_mode = cmdl[{"-r", "--rainbow"}];
     conf.bold_generation = cmdl[{"-b", "--bold"}];
+    conf.screensaver_mode = cmdl[{"-s", "--screensaver"}];
 
     return conf;
 }

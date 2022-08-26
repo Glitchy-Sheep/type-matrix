@@ -7,10 +7,9 @@
 #include "conf.h"
 #include "matrix.h"
 #include "ncurses_control.h"
+#include "keyboard_handler.h"
 
 namespace cfg = config;
-
-#include "keyboard_handler.h"
 
 int main(int argc, char** argv)
 {
@@ -27,13 +26,20 @@ int main(int argc, char** argv)
 
     Matrix matrix{wnd, conf};
 
-    int event = 0;
+    int key_event = 0;
     while(true)
     {
-        event = wgetch(wnd);
-        if (event == KEY_RESIZE)
+        key_event = wgetch(wnd);
+        if (key_event == KEY_RESIZE)
             matrix.handle_terminal_resize(wnd);
-        if (event == KEY_CTRL_('c') || event == KEY_ESCAPE)
+
+        if (key_event == KEY_CTRL_('c') || key_event == KEY_ESCAPE)
+        {
+            ncurses_cleanup();
+            exit(0);
+        }
+
+        if (key_event != ERR && conf.screensaver_mode)
         {
             ncurses_cleanup();
             exit(0);
@@ -41,10 +47,10 @@ int main(int argc, char** argv)
 
         if (conf.interactive_mode)
         {
-            if (event != ERR)
+            if (key_event != ERR)
             {
                 int min_x, max_x;
-                get_symbol_spawn_range(wnd, event, min_x, max_x);
+                get_symbol_spawn_range(wnd, key_event, min_x, max_x);
                 int spawn_x = get_rand(min_x, max_x);
                 int spawn_y = 0;
                 matrix.spawn_line(spawn_x, spawn_y);
