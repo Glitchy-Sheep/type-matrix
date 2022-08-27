@@ -4,6 +4,7 @@
 
 #include "conf.h"
 #include "helpers.h"
+#include "keyboard_handler.h"
 
 enum
 {
@@ -71,13 +72,15 @@ class Matrix {
 public:
     Matrix(WINDOW *wnd, config::TM_CONFIG cfg);
 
-    void spawn_line(int x, int y);
+    void spawn_lines(WINDOW *wnd, int key_event);
     void move_lines();
-
-    int get_terminal_max_x() { return m_term_max_x; }
-    int get_terminal_max_y() { return m_term_max_y; }
 
     void handle_terminal_resize(WINDOW *wnd);
 
     ~Matrix();
+
+private:
+    int get_terminal_max_x() { return m_term_max_x; }
+    int get_terminal_max_y() { return m_term_max_y; }
+    void spawn_line(int x, int y);
 };

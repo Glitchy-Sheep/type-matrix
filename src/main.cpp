@@ -45,24 +45,7 @@ int main(int argc, char** argv)
             exit(0);
         }
 
-        if (conf.interactive_mode)
-        {
-            if (key_event != ERR)
-            {
-                int min_x, max_x;
-                get_symbol_spawn_range(wnd, key_event, min_x, max_x);
-                int spawn_x = get_rand(min_x, max_x);
-                int spawn_y = 0;
-                matrix.spawn_line(spawn_x, spawn_y);
-            }
-        }
-        else
-        {
-            int spawn_x = rand() % matrix.get_terminal_max_x();
-            int spawn_y = 0;
-            matrix.spawn_line(spawn_x, spawn_y);
-        }
-
+        matrix.spawn_lines(wnd, key_event);
         matrix.move_lines();
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000/conf.fps));

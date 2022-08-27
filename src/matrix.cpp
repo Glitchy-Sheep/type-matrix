@@ -1,5 +1,13 @@
 #include "matrix.h"
 
+// Factor for lines spawn count control. This value is measured by eye
+// so density of matrix lines in terminal looks quite well on any resolution.
+//
+// If you spawn only one line per frame, wider terminal causes wider space
+// between lines and lower their count, which is not great on big screens
+// (see Matrix::spawn_lines function for more details)
+#define MAGIC_DENSITY_FACTOR 1/110
+
 
 //---------------------------------------------//
 //     One matrix symbol class realization     //
@@ -261,6 +269,39 @@ void Matrix::spawn_line(int x, int y)
     new_line->set_tail_max_length(new_line_length);
 
     m_lines.push_back(new_line);
+}
+
+void Matrix::spawn_lines(WINDOW *wnd, int key_event)
+{
+    int spawn_x, spawn_y;
+
+    // Terminal width dependent spawn:
+    // if terminal width increasing - increase spawn count accordingly
+    // so lines density is a quite constant value
+    int count_to_spawn = int(m_term_max_x * MAGIC_DENSITY_FACTOR);
+    if (count_to_spawn < 1)
+        count_to_spawn = 1;
+
+    for (int i = 0; i < count_to_spawn; ++i)
+    {
+        if (m_cfg.interactive_mode)
+        {
+            if (key_event == ERR)
+                return;
+
+            int min_x, max_x;
+            get_symbol_spawn_range(wnd, key_event, min_x, max_x);
+            spawn_x = get_rand(min_x, max_x);
+            spawn_y = 0;
+            spawn_line(spawn_x, spawn_y);
+        }
+        else
+        {
+            spawn_x = get_rand(0, get_terminal_max_x());
+            spawn_y = 0;
+            spawn_line(spawn_x, spawn_y);
+        }
+    }
 }
 
 void Matrix::handle_terminal_resize(WINDOW *wnd)
