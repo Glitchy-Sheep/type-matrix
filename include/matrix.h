@@ -69,11 +69,13 @@ class Matrix {
     config::TM_CONFIG m_cfg;
     int m_term_max_x, m_term_max_y;
     int m_min_line_length; // will be calculated with a user length deviation
+    int m_user_msg_x, m_user_msg_y;
 public:
     Matrix(WINDOW *wnd, config::TM_CONFIG cfg);
 
     void spawn_lines(WINDOW *wnd, int key_event);
     void move_lines();
+    void print_user_message();
 
     void handle_terminal_resize(WINDOW *wnd);
 

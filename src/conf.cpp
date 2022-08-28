@@ -36,6 +36,7 @@ void config::print_help_msg(argh::parser &cmdl)
     printf("\n-a --alphabet\t\tset matrix alphabet as a single string\n");
     printf("               \t\texample: -alph abc123\n");
     printf("\n-s --screensaver\texit the program if any key is pressed\n");
+    printf("\n-m --message\t\tprint some message to the center of the screen\n");
 }
 
 
@@ -210,6 +211,16 @@ void set_user_alphabet(TM_CONFIG &conf, argh::parser &cmdl)
 }
 
 
+void set_user_message(TM_CONFIG &conf, argh::parser &cmdl)
+{
+    if (cmdl({"-m", "--message"}))
+    {
+        conf.user_message = cmdl({"-m", "--message"}).str();
+    }
+    else
+        conf.user_message = "";
+}
+
 
 TM_CONFIG config::get_config(int argc, char** argv)
 {
@@ -222,6 +233,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     cmdl.add_params({"-l", "--length"});
     cmdl.add_params({"-d", "--deviation"});
     cmdl.add_params({"-a", "--alphabet"});
+    cmdl.add_params({"-m", "--message"});
 
     cmdl.parse(argc, argv);
 
@@ -237,6 +249,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     set_user_max_line_length(conf, cmdl);
     set_user_min_line_deviation(conf, cmdl);
     set_user_alphabet(conf, cmdl);
+    set_user_message(conf, cmdl);
 
     conf.interactive_mode = cmdl[{"-i", "--interactive"}];
     conf.rainbow_mode = cmdl[{"-r", "--rainbow"}];

@@ -19,6 +19,7 @@ namespace config
         unsigned int max_line_length;
         unsigned int min_line_length_deviation;
         std::string alphabet;                   // for random symbol generation
+        std::string user_message;
     };
 
     TM_CONFIG get_config(int argc, char** argv);

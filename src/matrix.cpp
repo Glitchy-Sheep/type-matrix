@@ -224,6 +224,12 @@ Matrix::Matrix(WINDOW *wnd, config::TM_CONFIG cfg)
     m_min_line_length = m_cfg.max_line_length - m_cfg.min_line_length_deviation;
     if (m_min_line_length < 0)
         m_min_line_length = 0;
+
+    if (m_cfg.user_message.length() != 0)
+    {
+        m_user_msg_x = (m_term_max_x - m_cfg.user_message.length()) / 2;
+        m_user_msg_y = (m_term_max_y / 2);
+    }
 }
 
 Matrix::~Matrix()
@@ -304,6 +310,16 @@ void Matrix::spawn_lines(WINDOW *wnd, int key_event)
     }
 }
 
+void Matrix::print_user_message()
+{
+    if (m_cfg.user_message.length() > 0)
+    {
+        attron(COLOR_PAIR(m_cfg.main_color));
+        mvaddstr(m_user_msg_y, m_user_msg_x, m_cfg.user_message.c_str());
+        attroff(COLOR_PAIR(m_cfg.main_color));
+    }
+}
+
 void Matrix::handle_terminal_resize(WINDOW *wnd)
 {
     resize_term(0, 0);
@@ -314,6 +330,12 @@ void Matrix::handle_terminal_resize(WINDOW *wnd)
 
     m_term_max_x = new_max_x;
     m_term_max_y = new_max_y;
+
+    if (m_cfg.user_message.length() != 0)
+    {
+        m_user_msg_x = (m_term_max_x - m_cfg.user_message.length()) / 2;
+        m_user_msg_y = (m_term_max_y / 2)-1;
+    }
 
     clear();
 }

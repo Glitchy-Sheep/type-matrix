@@ -47,6 +47,7 @@ int main(int argc, char** argv)
 
         matrix.spawn_lines(wnd, key_event);
         matrix.move_lines();
+        matrix.print_user_message();
         refresh();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000/conf.fps));
     }
