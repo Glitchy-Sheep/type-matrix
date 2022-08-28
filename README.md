@@ -47,6 +47,8 @@ Available options:
                       example: -alph abc123
 
 -s --screensaver      exit the program if any key is pressed
+
+-m -message           print some message to the center of the screen
 ```
 
 ## Preview
