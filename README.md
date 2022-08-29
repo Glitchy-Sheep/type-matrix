@@ -26,7 +26,7 @@ Available options:
 -i --interactive      matrix falls only when you're typing.
                       so you can impress your friends with your hacker skills B)
 
--c --color            set matrix main color  default=green)
+-c --color            set matrix main color  (default=green)
   Available colors:
   black, blue, cyan, green, magenta, red, white, yellow
 
@@ -48,7 +48,7 @@ Available options:
 
 -s --screensaver      exit the program if any key is pressed
 
--m -message           print some message to the center of the screen
+-m --message          print some message to the center of the screen
 ```
 
 ## Preview
