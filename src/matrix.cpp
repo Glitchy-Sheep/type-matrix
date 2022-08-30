@@ -228,7 +228,7 @@ Matrix::Matrix(WINDOW *wnd, config::TM_CONFIG cfg)
     if (m_cfg.user_message.length() != 0)
     {
         m_user_msg_x = (m_term_max_x - m_cfg.user_message.length()) / 2;
-        m_user_msg_y = (m_term_max_y / 2);
+        m_user_msg_y = (m_term_max_y / 2)-1;
     }
 }
 
@@ -314,9 +314,9 @@ void Matrix::print_user_message()
 {
     if (m_cfg.user_message.length() > 0)
     {
-        attron(COLOR_PAIR(m_cfg.main_color));
+        attron(COLOR_PAIR(m_cfg.message_color));
         mvaddstr(m_user_msg_y, m_user_msg_x, m_cfg.user_message.c_str());
-        attroff(COLOR_PAIR(m_cfg.main_color));
+        attroff(COLOR_PAIR(m_cfg.message_color));
     }
 }
 

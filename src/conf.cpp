@@ -2,10 +2,16 @@
 
 using namespace config;
 #define DEFAULT_FPS 15
-#define DEFAULT_MATRIX_COLOR COLOR_GREEN
+
+#define DEFAULT_MATRIX_COLOR  COLOR_GREEN
+#define DEFAULT_MESSAGE_COLOR COLOR_WHITE
+
 #define DEFAULT_MATRIX_LINE_LENGTH 12
 #define DEFAULT_MIN_LINE_DEVIATION 3
+
 #define DEFAULT_MATRIX_ALPHABET "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"
+
+
 
 void config::print_help_msg(argh::parser &cmdl)
 {
@@ -19,7 +25,7 @@ void config::print_help_msg(argh::parser &cmdl)
 
     printf("Available options:\n");
     printf("-h --help\t\tshow this help message\n");
-    printf("\n-i --interactive\t\tmatrix falls only when you're typing. \n");
+    printf("\n-i --interactive\tmatrix falls only when you're typing. \n");
     printf("  so you can impress your friends with your hacker skills B)\n");
     printf("\n-c --color\t\tset matrix main color (default=green)\n");
     printf("  Available colors:\n");
@@ -37,6 +43,9 @@ void config::print_help_msg(argh::parser &cmdl)
     printf("               \t\texample: -alph abc123\n");
     printf("\n-s --screensaver\texit the program if any key is pressed\n");
     printf("\n-m --message\t\tprint some message to the center of the screen\n");
+    printf("\n-C --message-color\tchange color of the message\n");
+    printf("  Available colors:\n");
+    printf("  black, blue, cyan, green, magenta, red, white, yellow\n");
 }
 
 
@@ -99,6 +108,28 @@ static void set_user_color(TM_CONFIG &conf, argh::parser &cmdl)
         else
             conf.main_color = DEFAULT_MATRIX_COLOR;
     }
+}
+
+
+
+static void set_user_message_color(TM_CONFIG &conf, argh::parser &cmdl)
+{
+    if (cmdl({"-C", "--message-color"}))
+    {
+        std::string user_color_name = cmdl({"-C", "--message-color"}).str();
+        int user_color = translate_ncurses_color(user_color_name);
+
+        if (user_color == UNKNOWN_COLOR)
+        {
+                ncurses_cleanup();
+                print_help_msg(cmdl);
+                exit(int(ERRORS::ERR_COLOR_NAME));
+        }
+        else
+            conf.message_color = user_color;
+    }
+    else
+        conf.message_color = DEFAULT_MESSAGE_COLOR;
 }
 
 
@@ -234,6 +265,7 @@ TM_CONFIG config::get_config(int argc, char** argv)
     cmdl.add_params({"-d", "--deviation"});
     cmdl.add_params({"-a", "--alphabet"});
     cmdl.add_params({"-m", "--message"});
+    cmdl.add_params({"-C", "--message-color"});
 
     cmdl.parse(argc, argv);
 
@@ -250,11 +282,12 @@ TM_CONFIG config::get_config(int argc, char** argv)
     set_user_min_line_deviation(conf, cmdl);
     set_user_alphabet(conf, cmdl);
     set_user_message(conf, cmdl);
+    set_user_message_color(conf, cmdl);
 
-    conf.interactive_mode = cmdl[{"-i", "--interactive"}];
-    conf.rainbow_mode = cmdl[{"-r", "--rainbow"}];
-    conf.bold_generation = cmdl[{"-b", "--bold"}];
-    conf.screensaver_mode = cmdl[{"-s", "--screensaver"}];
+    conf.interactive_mode       = cmdl[{"-i", "--interactive"}];
+    conf.rainbow_mode           = cmdl[{"-r", "--rainbow"}];
+    conf.bold_generation        = cmdl[{"-b", "--bold"}];
+    conf.screensaver_mode       = cmdl[{"-s", "--screensaver"}];
 
     return conf;
 }

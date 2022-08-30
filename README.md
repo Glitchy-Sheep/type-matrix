@@ -49,6 +49,10 @@ Available options:
 -s --screensaver      exit the program if any key is pressed
 
 -m --message          print some message to the center of the screen
+
+-C --message-color    set message main color
+  Available colors:
+  black, blue, cyan, green, magenta, red, white, yellow
 ```
 
 ## Preview

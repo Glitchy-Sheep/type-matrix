@@ -9,15 +9,18 @@ namespace config
 {
     struct TM_CONFIG {          // whole application config
         bool colored_terminal;
-        bool interactive_mode;  // matrix falls only when u're typing letters a-Z
+        bool interactive_mode;  // matrix falls only when u're typing
         bool screensaver_mode;
         bool rainbow_mode;
         bool bold_generation;
 
         int main_color;                         // ncurses colors bit masks
+        int message_color;
+
         unsigned int fps;                       // matrix update frame rate
         unsigned int max_line_length;
         unsigned int min_line_length_deviation;
+
         std::string alphabet;                   // for random symbol generation
         std::string user_message;
     };
