@@ -284,11 +284,13 @@ void Matrix::spawn_lines(WINDOW *wnd, int key_event)
     // Terminal width dependent spawn:
     // if terminal width increasing - increase spawn count accordingly
     // so lines density is a quite constant value
-    int count_to_spawn = int(m_term_max_x * MAGIC_DENSITY_FACTOR);
+    long count_to_spawn = std::lround(
+                    static_cast<double>(m_term_max_x) * MAGIC_DENSITY_FACTOR);
+
     if (count_to_spawn < 1)
         count_to_spawn = 1;
 
-    for (int i = 0; i < count_to_spawn; ++i)
+    for (long i = 0; i < count_to_spawn; ++i)
     {
         if (m_cfg.interactive_mode)
         {

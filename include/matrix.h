@@ -1,5 +1,6 @@
 #pragma once
 #include <curses.h>
+#include <cmath>        // for number rounding functions
 #include <list>
 
 #include "conf.h"
