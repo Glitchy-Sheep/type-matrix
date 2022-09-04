@@ -74,15 +74,4 @@ _If you don't like package managers, you also can link all the libraries manuall
   2. [pdcurses](https://pdcurses.org/) (for windows) /
      [ncurses](https://invisible-island.net/ncurses/) (for linux)
 
-### Building process (Windows)
-  1. Install [python3](https://www.python.org/) and conan (`pip install conan`).
-  2. Install [CMake](https://cmake.org/).
-  3. Make sure you have some compiler in your system, so CMake can recognize it as a generator.
-  4. Open command line in the project root directory.
-  5. Run conan configuration script (`configure_debug.bat` or `configure_release.bat`)<br>
-     It downloads all the required libraries, generates a `conanbuildinfo.cmake` file for CMake,
-     creates build directory and generates all project files.<br>
-  6. Run `cmake --build .` in the created `./build` directory.
-  7. Your binaries are placed in `./build/bin`.
-
 [cmatrix-repo]: https://github.com/abishekvashok/cmatrix
