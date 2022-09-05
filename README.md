@@ -65,13 +65,23 @@ Available options:
 </p>
 
 ## How to build
+
 This project uses [conan package manager](https://conan.io/)
 and [CMake](https://cmake.org/) for building automation, so you need to install them first.<br>
 _If you don't like package managers, you also can link all the libraries manually._
 
 ### Dependencies
-  1. [Argh!](https://github.com/adishavit/argh)
-  2. [pdcurses](https://pdcurses.org/) (for windows) /
-     [ncurses](https://invisible-island.net/ncurses/) (for linux)
+
+1. [Argh!](https://github.com/adishavit/argh)
+2. [pdcurses](https://pdcurses.org/) (for windows) /
+   [ncurses](https://invisible-island.net/ncurses/) (for linux)
+
+### Building Process:
+
+Now the project has automation scripts for building, [you can find all necessary instructions here][building-instructions].
+
+
 
 [cmatrix-repo]: https://github.com/abishekvashok/cmatrix
+
+[building-instructions]: https://github.com/Glitchy-Sheep/type-matrix/tree/main/configuration_scripts
