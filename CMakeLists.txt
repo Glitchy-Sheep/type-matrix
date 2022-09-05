@@ -1,7 +1,9 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.17)
 
 project(type-matrix)
 
+# disable compiler version check for convinience
+set(CONAN_DISABLE_CHECK_COMPILER TRUE)
 include(conanbuildinfo.cmake)
 conan_basic_setup()
 

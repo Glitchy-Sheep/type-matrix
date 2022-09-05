@@ -6,3 +6,6 @@ conanbuildinfo*
 conan.lock
 conaninfo.txt
 graph_info.json
+
+# Some python env stuff
+__*__/

@@ -15,7 +15,7 @@ using namespace config;
 
 void config::print_help_msg(argh::parser &cmdl)
 {
-    printf("\nUsage: "); printf(cmdl[0].c_str()); printf(" [options]\n");
+    printf("\nUsage: "); printf("%s", cmdl[0].c_str()); printf(" [options]\n");
     printf("\n");
     printf("This program creates a matrix effect right in your terminal,\n");
     printf("all you need is just run it and pass some options you want.\n");
