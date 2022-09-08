@@ -20,7 +20,7 @@ This project uses cmake, python and conan for configuration and building automat
 
    *Or* you can just install visual studio with its c++ compilers and packages.
 
-4. Make sure you have mingw64 bin directory (usually `C:\MinGW\bin`) in your `PATH` variable, so cmake and conan can locate compilers. And also check your cmake and python binaries also are in the `PATH` variable, otherwise scripts won't work.
+4. Make sure you have mingw64 bin directory (usually `C:\MinGW\bin`) in your `PATH` variable, and your `PATH` doesn't contain another version of MinGW compiler (like and especially win32), so cmake and conan can locate the compiler correctly. And also check your cmake and python binaries are in the `PATH` variable too, otherwise scripts won't work.
 
 5. Run one of python scripts in
 
