@@ -46,9 +46,7 @@ This project uses cmake, python and conan for configuration and building automat
 
 2. Run one of python scripts in
 
-   `configuration_scripts/gcc_universal` or
-
-   `configuration_scripts/visual_studio` depending of the choice of compiler.
+   `configuration_scripts/gcc_universal`
 
    You have the following options here:
 
